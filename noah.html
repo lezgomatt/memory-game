@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Noah's Ark Memory Game</title>
+<style>
+body{
+  background: url(animals/noahsarkbg.jpg) top center no-repeat;
+  background-size: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#space{
+  width: 1024px;
+  margin: auto;
+  /*"REALISTIC" PERSPECTIVE but also more RESOURCE HEAVY (esp, weirdly, for the top and bottom rows)
+    also, to see the effect, the transition duration for transform must be an integer
+  -moz-perspective: 280px;
+  -webkit-perspective: 280px;
+  */
+}
+
+.card{
+  position: relative;
+  -moz-transform-style: preserve-3d;
+  -moz-transition: -moz-transform 0.5s;
+  -webkit-transform-style: preserve-3d;
+  -webkit-transition: -webkit-transform 0.5s;
+  width: 100px;
+  height: 100px;
+  border: 7px solid white;
+  border-radius: 7px;
+  box-shadow: 0 2px 7px #222; 
+  float: left;
+  margin: 7px;
+  cursor:pointer;
+
+}
+
+.flip{
+  -moz-transform: rotateY( 180deg );
+  -webkit-transform: rotateY( 180deg );
+}
+.hide{
+  -moz-transition: opacity 1s, visibility 1s;
+  -webkit-transition: opacity 1s, visibility 1s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.side{
+  position: absolute;
+  display: block;
+  width: 100px;
+  height: 100px;
+  -moz-backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  padding: 0;
+  margin: 0;
+}
+.front{
+  background: #3377BB;
+  text-align: center;
+  font-family: Verdana;
+  font-size: 65px;
+  font-weight: bold;
+  color: white;
+  line-height: 96px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+.back{
+  -moz-transform: rotateY( 180deg );
+  -webkit-transform: rotateY( 180deg );
+  background-color: white;
+  background-repeat: no-repeat;
+  background-size: 100px 100px;
+}
+</style>
+</head>
+<body>
+<div id="space">
+</div>
+<script>
+/* ADDITIONAL INFO POSSIBLE IN FUTURE VERSIONS:
+1) SOUND - on flip, right or wrong
+2) TIME - with pause?
+3) WIN - big txt w/ fx? sounds?
+4) MOVE COUNTER - simple counter
+*/
+
+//initializations
+anim=
+["bear"
+,"camel"
+,"cheetah"
+,"deer"
+,"dog"
+,"duck"
+,"eagle"
+,"elephant"
+,"flamingo"
+,"fox"
+,"giraffe"
+,"gorilla"
+,"hippo"
+,"horse"
+,"kangaroo"
+,"koala"
+,"ostrich"
+,"penguin"
+,"rabbit"
+,"raccoon"
+,"rhino"
+,"squirrel"
+,"tiger"
+,"wolf"];
+animals=anim.length;
+cards=animals*2;
+anim2=anim.concat(anim);
+
+//shufflin'
+function shuffle(array) {
+    var tmp, current, top = array.length;
+    if(top) while(--top) {
+        current = Math.floor(Math.random() * (top + 1));
+        tmp = array[current];
+        array[current] = array[top];
+        array[top] = tmp;
+    }
+    return array;
+}
+anim2=shuffle(anim2);
+
+//template
+space=document.getElementById('space');
+for (var i=1; i<=cards; i++){
+  var card= document.createElement("div");
+  card.id="card"+i;
+  card.className="card";
+  var front=document.createElement("div");
+  front.className="front side";
+  front.innerHTML=i.toString();
+  var back=document.createElement("div");
+  back.className="back side";
+  back.style.backgroundImage="url(animals/"+anim2[i-1]+".jpg)";
+  card.appendChild(front);
+  card.appendChild(back);
+  space.appendChild(card);
+}
+
+//event-logic
+selected=null;
+function clicked(e){
+    if (selected==null){
+        selected=e;
+        flipOpen(e);
+        return;
+    }
+    if(e==selected){ 
+        selected=null;
+        flipClose(e);
+        return;
+    }
+    flipOpen(e);
+    selectN=parseInt(selected.id.slice(4))-1;
+    eN=parseInt(e.id.slice(4))-1;
+    if(anim2[eN]==anim2[selectN]){
+        delayHide(e,selected);
+        selected=null;
+    }else{
+        delayClose(e,selected); //notice: can't replace function's contents cause it'll make REFERENCE to selected which has been declared null below. closures can be used instead.
+        selected=null;
+    }
+}
+
+function flipOpen(e){
+    e.className="card flip";
+}
+
+function flipClose(e){
+    e.className="card";
+}
+
+function delayHide(a,b){
+    setTimeout(function(){
+    a.className="card flip hide";
+    b.className="card flip hide";
+    },800);
+}
+function delayClose(a,b){ //in here on the other hand, in the annony function, a and b make REFERENCE to (in this closure) the a and b that have been passed by VALUE earlier
+    setTimeout(function(){
+    flipClose(a);
+    flipClose(b);
+    },800);
+}
+
+cardEl=document.getElementsByClassName('card');
+for(var i=0, l=cardEl.length; i<l; i++){
+  cardEl[i].addEventListener("click", function(){clicked(this)});
+}
+
+
+
+</script>
+</body>
+</html>
