@@ -62,8 +62,6 @@ for (var i=1; i<=cards; i++){
   var back=document.createElement("div");
   back.className="back side";
   back.style.backgroundImage="url(images/"+anim2[i-1]+".jpg)";
-  back.style.backgroundSize="contain";
-  back.style.backgroundPosition="center";
   card.appendChild(front);
   card.appendChild(back);
   space.appendChild(card);

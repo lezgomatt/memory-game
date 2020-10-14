@@ -1,76 +1,72 @@
-body{
-  background: gray top center no-repeat;
-  background-size: 100%;
+html {
+  box-sizing: border-box;
+  height: 100%;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
   margin: 0;
-  padding: 0;
+  background: rgb(99, 117, 143) top center no-repeat;
 }
 
-#space{
-  width: 1024px;
-  margin: auto;
-  /*"REALISTIC" PERSPECTIVE but also more RESOURCE HEAVY (esp, weirdly, for the top and bottom rows)
-    also, to see the effect, the transition duration for transform must be an integer
-  -moz-perspective: 280px;
-  -webkit-perspective: 280px;
-  */
+#space {
+  width: 1008px;
 }
 
-.card{
+.card {
   position: relative;
-  -moz-transform-style: preserve-3d;
-  -moz-transition: -moz-transform 0.5s;
-  -webkit-transform-style: preserve-3d;
-  -webkit-transition: -webkit-transform 0.5s;
-  width: 100px;
-  height: 100px;
-  border: 7px solid white;
-  border-radius: 7px;
-  box-shadow: 0 2px 7px #222;
   float: left;
-  margin: 7px;
+  width: 110px;
+  height: 110px;
+  margin: 8px;
   cursor:pointer;
-
 }
 
-.flip{
-  -moz-transform: rotateY( 180deg );
-  -webkit-transform: rotateY( 180deg );
-}
-
-.hide{
-  -moz-transition: opacity 1s, visibility 1s;
-  -webkit-transition: opacity 1s, visibility 1s;
-  opacity: 0;
+.hide {
   visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.5s, opacity 0.5s;
 }
 
-.side{
+.side {
   position: absolute;
   display: block;
-  width: 100px;
-  height: 100px;
-  -moz-backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  padding: 0;
-  margin: 0;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  background: white;
 }
 
-.front{
-  background: #3377BB;
+.front {
+  font: 32px/110px Verdana;
   text-align: center;
-  font-family: Verdana;
-  font-size: 65px;
-  font-weight: bold;
-  color: white;
-  line-height: 96px;
-  -moz-user-select: none;
-  -webkit-user-select: none;
+  user-select: none;
+  transition: transform 0.2s linear 0.2s;
 }
 
-.back{
-  -moz-transform: rotateY( 180deg );
-  -webkit-transform: rotateY( 180deg );
-  background-color: white;
+.flip .front {
+  transform: rotateY(90deg);
+  transition-delay: 0s;
+}
+
+.back {
+  background-position: center;
   background-repeat: no-repeat;
-  background-size: 100px 100px;
+  background-size: contain;
+  transform: rotateY(-90deg);
+  transition: transform 0.2s linear 0s;
+}
+
+.flip .back {
+  transform: rotateY(0deg);
+  transition-delay: 0.2s;
 }
