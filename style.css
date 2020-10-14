@@ -1,0 +1,76 @@
+body{
+  background: gray top center no-repeat;
+  background-size: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#space{
+  width: 1024px;
+  margin: auto;
+  /*"REALISTIC" PERSPECTIVE but also more RESOURCE HEAVY (esp, weirdly, for the top and bottom rows)
+    also, to see the effect, the transition duration for transform must be an integer
+  -moz-perspective: 280px;
+  -webkit-perspective: 280px;
+  */
+}
+
+.card{
+  position: relative;
+  -moz-transform-style: preserve-3d;
+  -moz-transition: -moz-transform 0.5s;
+  -webkit-transform-style: preserve-3d;
+  -webkit-transition: -webkit-transform 0.5s;
+  width: 100px;
+  height: 100px;
+  border: 7px solid white;
+  border-radius: 7px;
+  box-shadow: 0 2px 7px #222;
+  float: left;
+  margin: 7px;
+  cursor:pointer;
+
+}
+
+.flip{
+  -moz-transform: rotateY( 180deg );
+  -webkit-transform: rotateY( 180deg );
+}
+
+.hide{
+  -moz-transition: opacity 1s, visibility 1s;
+  -webkit-transition: opacity 1s, visibility 1s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.side{
+  position: absolute;
+  display: block;
+  width: 100px;
+  height: 100px;
+  -moz-backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  padding: 0;
+  margin: 0;
+}
+
+.front{
+  background: #3377BB;
+  text-align: center;
+  font-family: Verdana;
+  font-size: 65px;
+  font-weight: bold;
+  color: white;
+  line-height: 96px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+.back{
+  -moz-transform: rotateY( 180deg );
+  -webkit-transform: rotateY( 180deg );
+  background-color: white;
+  background-repeat: no-repeat;
+  background-size: 100px 100px;
+}
