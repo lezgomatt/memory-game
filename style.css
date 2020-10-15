@@ -32,7 +32,8 @@ body {
 .hide {
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0.5s, opacity 0.5s;
+  transform: scale(0.2);
+  transition: visibility 0.5s, opacity 0.5s, transform 0.5s;
 }
 
 .side {
