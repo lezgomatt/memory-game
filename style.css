@@ -9,11 +9,13 @@ html {
 
 body {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100%;
   margin: 0;
   background: rgb(99, 117, 143) top center no-repeat;
+  font-family: sans-serif;
 }
 
 .play-area {
@@ -49,7 +51,8 @@ body {
 }
 
 .side-front {
-  font: 32px/110px Verdana;
+  font-size: 32px;
+  line-height: 110px;
   text-align: center;
   user-select: none;
   transform: rotateY(0deg);
@@ -78,4 +81,14 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+}
+
+.credits {
+  margin: 8px;
+  color: white;
+  font-size: 14px;
+}
+
+.credits a {
+  color: #8bcff7;
 }
