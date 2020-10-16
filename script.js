@@ -1,13 +1,4 @@
-/* ADDITIONAL INFO POSSIBLE IN FUTURE VERSIONS:
-1) SOUND - on flip, right or wrong
-2) TIME - with pause?
-3) WIN - big txt w/ fx? sounds?
-4) MOVE COUNTER - simple counter
-*/
-
-//initializations
-anim=
-[
+let cards = [
   "Atari-2600",
   "NES",
   "PlayStation-2",
@@ -33,87 +24,97 @@ anim=
   "SNES",
   "Xbox",
 ];
-animals=anim.length;
-cards=animals*2;
-anim2=anim.concat(anim);
 
-//shufflin'
+cards = shuffle(cards.concat(cards));
+
+let playArea = document.querySelector(".play-area");
+let template = document.getElementById("card-template");
+
+for (let i = 0; i < cards.length; i++) {
+  let cardElem = template.content.cloneNode(true).querySelector(".card");
+  cardElem.dataset.index = i;
+  cardElem.querySelector(".side-front").textContent = i + 1;
+  cardElem.querySelector(".card-image").style.backgroundImage = `url("images/${cards[i]}.jpg")`;
+  cardElem.addEventListener("click", () => { flip(i); });
+  playArea.appendChild(cardElem);
+}
+
+let selected = null;
+
+function flip(i) {
+  let cardElem = getCardElem(i);
+  if (cardElem.classList.contains("hidden")) {
+    return;
+  }
+
+  if (selected == null) {
+    selected = i;
+    open(cardElem);
+    return;
+  }
+
+  if (i === selected) {
+    selected = null;
+    close(cardElem);
+    return;
+  }
+
+  let cardsMatch = cards[i] === cards[selected];
+  let selectedElem = getCardElem(selected);
+  selected = null;
+
+  open(cardElem);
+
+  if (cardsMatch) {
+    wait(750).then(() => {
+      hide(cardElem);
+      hide(selectedElem);
+    });
+  } else {
+    wait(750).then(() => {
+      close(cardElem);
+      close(selectedElem);
+    });
+  }
+}
+
+function open(cardElem) {
+  cardElem.classList.add("flipped");
+}
+
+function close(cardElem) {
+  cardElem.classList.remove("flipped");
+}
+
+function hide(cardElem) {
+  cardElem.classList.add("hidden");
+}
+
+function getCardElem(n) {
+  return playArea.querySelector(`.card[data-index="${n}"]`);
+}
+
 function shuffle(array) {
-    var tmp, current, top = array.length;
-    if(top) while(--top) {
-        current = Math.floor(Math.random() * (top + 1));
-        tmp = array[current];
-        array[current] = array[top];
-        array[top] = tmp;
-    }
-    return array;
-}
-anim2=shuffle(anim2);
+  for (let len = array.length; len > 1; len--) {
+    let i = randInt(0, len);
+    swap(array, i, len - 1);
+  }
 
-//template
-space=document.getElementById('space');
-for (var i=1; i<=cards; i++){
-  var card= document.createElement("div");
-  card.id="card"+i;
-  card.className="card";
-  var front=document.createElement("div");
-  front.className="front side";
-  front.innerHTML=i.toString();
-  var back=document.createElement("div");
-  back.className="back side";
-  back.style.backgroundImage="url(images/"+anim2[i-1]+".jpg)";
-  card.appendChild(front);
-  card.appendChild(back);
-  space.appendChild(card);
+  return array;
 }
 
-//event-logic
-selected=null;
-function clicked(e){
-    if (selected==null){
-        selected=e;
-        flipOpen(e);
-        return;
-    }
-    if(e==selected){
-        selected=null;
-        flipClose(e);
-        return;
-    }
-    flipOpen(e);
-    selectN=parseInt(selected.id.slice(4))-1;
-    eN=parseInt(e.id.slice(4))-1;
-    if(anim2[eN]==anim2[selectN]){
-        delayHide(e,selected);
-        selected=null;
-    }else{
-        delayClose(e,selected); //notice: can't replace function's contents cause it'll make REFERENCE to selected which has been declared null below. closures can be used instead.
-        selected=null;
-    }
+function randInt(base, limit) {
+  return base + Math.floor(Math.random() * (limit - base));
 }
 
-function flipOpen(e){
-    e.className="card flip";
+function swap(array, i, j) {
+  let temp = array[i];
+  array[i] = array[j];
+  array[j] = temp;
 }
 
-function flipClose(e){
-    e.className="card";
-}
-
-function delayHide(a,b){
-    setTimeout(function(){
-    a.className="card flip hide";
-    b.className="card flip hide";
-    },800);
-}
-function delayClose(a,b){ //in here on the other hand, in the annony function, a and b make REFERENCE to (in this closure) the a and b that have been passed by VALUE earlier
-    setTimeout(function(){
-    flipClose(a);
-    flipClose(b);
-    },800);
-}
-
-cardEl=document.getElementsByClassName('card');
-for(var i=0, l=cardEl.length; i<l; i++){
-  cardEl[i].addEventListener("click", function(){clicked(this)});
+function wait(ms) {
+  return new Promise((resolve) => {
+    window.setTimeout(() => resolve(), ms);
+  });
 }

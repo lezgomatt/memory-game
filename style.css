@@ -16,8 +16,9 @@ body {
   background: rgb(99, 117, 143) top center no-repeat;
 }
 
-#space {
-  width: 1008px;
+.play-area {
+  width: 1008px; /* (110 + 16) * 8 */
+  height: 756px; /* (110 + 16) * 7 */
 }
 
 .card {
@@ -29,14 +30,14 @@ body {
   cursor:pointer;
 }
 
-.hide {
+.hidden {
   visibility: hidden;
   opacity: 0;
   transform: scale(0.2);
   transition: visibility 0.5s, opacity 0.5s, transform 0.5s;
 }
 
-.side {
+.side-front, .side-back {
   position: absolute;
   display: block;
   overflow: hidden;
@@ -47,27 +48,34 @@ body {
   background: white;
 }
 
-.front {
+.side-front {
   font: 32px/110px Verdana;
   text-align: center;
   user-select: none;
+  transform: rotateY(0deg);
   transition: transform 0.2s linear 0.2s;
 }
 
-.flip .front {
+.flipped .side-front {
   transform: rotateY(90deg);
   transition-delay: 0s;
 }
 
-.back {
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
+.side-back {
+  padding: 2px;
   transform: rotateY(-90deg);
   transition: transform 0.2s linear 0s;
 }
 
-.flip .back {
+.flipped .side-back {
   transform: rotateY(0deg);
   transition-delay: 0.2s;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
