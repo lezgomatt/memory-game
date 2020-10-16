@@ -18,9 +18,13 @@ body {
   font-family: sans-serif;
 }
 
-.play-area {
+.play-area, .game-over {
   width: 1008px; /* (110 + 16) * 8 */
   height: 756px; /* (110 + 16) * 7 */
+}
+
+.play-area.done {
+  display: none;
 }
 
 .card {
@@ -91,4 +95,35 @@ body {
 
 .credits a {
   color: #8bcff7;
+}
+
+.game-over {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  transition: transform 0.4s, opacity 0.4s;
+}
+
+.game-over.done {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.game-over.done.start {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.over-text {
+  margin-bottom: 24px;
+  font-size: 96px;
+  font-weight: bold;
+  line-height: 80px;
+}
+
+.again-text {
+  font-size: 18px;
 }

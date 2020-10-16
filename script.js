@@ -27,8 +27,9 @@ let cards = [
 
 cards = shuffle(cards.concat(cards));
 
-let playArea = document.querySelector(".play-area");
-let template = document.getElementById("card-template");
+const playArea = document.querySelector(".play-area");
+const gameOver = document.querySelector(".game-over");
+const template = document.getElementById("card-template");
 
 for (let i = 0; i < cards.length; i++) {
   let cardElem = template.content.cloneNode(true).querySelector(".card");
@@ -40,6 +41,7 @@ for (let i = 0; i < cards.length; i++) {
 }
 
 let selected = null;
+let numHidden = 0;
 
 function flip(i) {
   let cardElem = getCardElem(i);
@@ -70,6 +72,15 @@ function flip(i) {
       hide(cardElem);
       hide(selectedElem);
     });
+
+    numHidden += 2;
+    if (numHidden === cards.length) {
+      wait(1250).then(() => {
+        playArea.classList.add("done");
+        gameOver.classList.add("done", "start");
+        window.requestAnimationFrame(() => { gameOver.classList.remove("start"); });
+      });
+    }
   } else {
     wait(750).then(() => {
       close(cardElem);
