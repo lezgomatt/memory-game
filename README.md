@@ -1,8 +1,8 @@
 # Memory Game
 
-A simple memory game. Originally created for Sunday School with a Noah's Ark theme.
-Now showcasing a video game console theme as I do not have the rights to distribute
-the original images used.
+A simple memory game, originally created for Sunday School with a Noah's Ark theme.
+Since I do not have the rights to distribute the images used back then,
+it now showcases various video game consoles instead.
 
 [Check it out »](https://lezgomatt.github.io/memory-game/)
 
