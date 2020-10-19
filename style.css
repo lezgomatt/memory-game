@@ -60,7 +60,7 @@ body {
   text-align: center;
   user-select: none;
   transform: rotateY(0deg);
-  transition: transform 0.2s linear 0.2s;
+  transition: transform 0.125s linear 0.125s;
 }
 
 .flipped .side-front {
@@ -71,12 +71,12 @@ body {
 .side-back {
   padding: 2px;
   transform: rotateY(-90deg);
-  transition: transform 0.2s linear 0s;
+  transition: transform 0.125s linear 0s;
 }
 
 .flipped .side-back {
   transform: rotateY(0deg);
-  transition-delay: 0.2s;
+  transition-delay: 0.125s;
 }
 
 .card-image {
